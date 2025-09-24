@@ -15,19 +15,28 @@ void shell_print(char* user)
 	printf("\033[1;36m%s\033[0m:\033[1;31m~\033[0m$ ",user);
 }
 
+void leer_input(string &command)
+{
+	getline(cin, command);
+}
 
+void manejar_ctrl_c(int sig)
+{
+	printf("\n");
+	shell_print(user);
+	fflush(stdout);
+}
 
-int main(){
-	struct sigaction sa; // Estructura para acciones
-	sa.sa_handler = SIG_IGN; // Ignorar la señal
-	sigaction(SIGINT, &sa, NULL); // Aplicar la acción a la señal
-
+int main()
+{
+	signal(SIGINT, manejar_ctrl_c); // Manejar Ctrl+C
 	gethostname(user, HOST_NAME_MAX);
 	
-	while(1){
+	while(1)
+	{
 		string command;
 		shell_print(user);
-		getline(cin, command);
+		leer_input(command);
 
 		if (command.compare("exit") == 0)
 		{
