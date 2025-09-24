@@ -5,19 +5,21 @@
 #include <sys/wait.h>
 #include <limits.h> //Para obtener el limite del nombre del host
 #include <signal.h>
+#include <vector>
+#include <sstream>
 
 using namespace std;
 char user[HOST_NAME_MAX+1];
-
+#define MAX_COMMAND_SUPPORTED 3 // cd, exit y miprof
 
 void shell_print(char* user)
 {
 	printf("\033[1;36m%s\033[0m:\033[1;31m~\033[0m$ ",user);
 }
 
-void leer_input(string &command)
+void leer_input(string &input)
 {
-	getline(cin, command);
+	getline(cin, input);
 }
 
 void manejar_ctrl_c(int sig)
@@ -27,21 +29,91 @@ void manejar_ctrl_c(int sig)
 	fflush(stdout);
 }
 
+int manejar_comandos(vector<string> comandos){
+	if(comandos[0].compare("exit") == 0)
+	{
+		cout << "Saliendo de la shell..." << endl;
+		exit(0); 
+	}
+	else if(comandos[0].compare("cd") == 0)
+	{
+		if(comandos.size() < 2)
+		{
+			cout << "cd: falta el argumento del directorio" << endl;
+			return 1;
+		}
+		if(chdir(comandos[1].c_str()) != 0)
+		{
+			perror("Error al cambiar de directorio");
+		}
+		return 1;
+	}
+	else if(comandos[0].compare("miprof") == 0)
+	{
+		// ojo -> miprof parte 2 de la tarea
+		return 1; 
+	}
+	return 0; 
+}
+
+// Funcion para separar los comandos por pipes
+void separar_comandos(string &input, vector<vector<string>> &comandos)
+{
+	stringstream ss(input);
+	string comando;
+	
+	while(getline(ss, comando, '|'))
+	{
+		comandos.push_back({});
+
+		stringstream comando_ss(comando);
+		string argumento;
+
+		while( comando_ss >> argumento)
+		{
+			comandos.back().push_back(argumento);
+		}
+	}
+}
+
+
+int procesar_input_usuario(string &input, vector<vector<string>> &comandos)
+{
+	separar_comandos(input, comandos);
+	
+	// Verificar si hay comandos válidos
+	if(comandos.size() > 0 && comandos[0].size() > 0)
+	{
+		return manejar_comandos(comandos[0]);
+	}
+	
+	return 0;
+}
+
 int main()
 {
+	vector<vector<string>> comandos;
 	signal(SIGINT, manejar_ctrl_c); // Manejar Ctrl+C
 	gethostname(user, HOST_NAME_MAX);
 	
 	while(1)
 	{
-		string command;
+		string input;
 		shell_print(user);
-		leer_input(command);
+		leer_input(input);
 
-		if (command.compare("exit") == 0)
+		// Saltar si la entrada está vacía
+		if (input.empty() || input.find_first_not_of(" \t\n\r") == string::npos)
 		{
-				exit(1);
+			comandos.clear();
+			continue;
 		}
+
+		if(!procesar_input_usuario(input, comandos)){
+			//Ver si hay pipes
+			cout << "Comando no reconocido: " << input << endl;
+		}
+		comandos.clear();
 	}
 
 
