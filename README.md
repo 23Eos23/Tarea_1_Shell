@@ -6,10 +6,10 @@ Breve descripción sobre cómo compilar y ejecutar comandos dentro de la shell
 
 Para la ejecución y uso de la consola de comando se necesita un entorno o sistema Unix:
 
-'''
+```
 g++ tarea1.cpp
 ./a.out
-'''
+```
 
 Luego de compilar el programa y ejecultarlo se deberá mostrar por pantalla el prompt.
 
