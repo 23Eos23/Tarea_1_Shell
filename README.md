@@ -27,28 +27,29 @@ La Shell cuenta con un comando personalizado llamado *miprof*. El cual consiste 
 de ejecución en tiempos de usuario, sistema y real, junto con el peak de memoria máxima residente.
 
 # 1. Ejecutar comandos
-'''
+```
 miprof ejec comando args
-'''
+```
 Muestra los datos en pantalla
-'''
+```
 miprof ejecsave archivo comando args
-'''
+```
 Ejecuta y guarda la salida en *archivo*.
 Si el archivo existe, se agrega al final.
 
 # 2. Con Sort
 
 Ejemplo para analizar rendimiento con distintos tamaños de archivo:
-'''
+```
 miprof ejec sort archivo.txt
-'''
+```
+
 
 # 3. Limite de tiempo
 
-'''
+```
 miprof maxtiempo comando args
-'''
+```
 Ejecuta con un tiempo máximo (maxtiempo en segundos).
 Si se excede, el proceso se termina.
 
