@@ -56,6 +56,27 @@ int manejar_comandos(vector<string> comandos){
 	return 0; 
 }
 
+// Se implementa la lógica de solo un pipe
+void proceso(vector<string> &comando)
+{
+	int pid = fork();
+
+	if(pid == 0)
+	{
+		
+	}
+	else 
+	{
+		perror("Error al crear proceso hijo en fork");
+	}
+}
+
+// Se implementa la lógica de multiples pipes
+void procesar_multiples_pipes(vector<vector<string>> &comandos)
+{
+	
+}
+
 // Funcion para separar los comandos por pipes
 void separar_comandos(string &input, vector<vector<string>> &comandos)
 {
@@ -77,11 +98,11 @@ void separar_comandos(string &input, vector<vector<string>> &comandos)
 }
 
 
+// Revisa si el comando es interno
 int procesar_input_usuario(string &input, vector<vector<string>> &comandos)
 {
 	separar_comandos(input, comandos);
 	
-	// Verificar si hay comandos válidos
 	if(comandos.size() > 0 && comandos[0].size() > 0)
 	{
 		return manejar_comandos(comandos[0]);
