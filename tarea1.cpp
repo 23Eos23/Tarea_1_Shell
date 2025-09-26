@@ -210,7 +210,6 @@ void proceso(vector<string> &comando)
     if(execvp(args[0], args.data()) == -1)
     {
       cerr << "mishell: comando no encontrado: " << args[0] << endl;
-      perror("Detalle del error");
       exit(1); // El hijo debe terminar si execvp falla
     }
   }
@@ -278,8 +277,7 @@ void procesar_multiples_pipes(vector<vector<string>> &comandos)
       if(execvp(args[0], args.data()) == -1)
       {
         cerr << "mishell: comando no encontrado: " << args[0] << endl;
-        perror("Detalle del error");
-        exit(1); // Es crucial salir aquí
+        exit(1);
       }
     }
     else if(pid < 0)
