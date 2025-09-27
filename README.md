@@ -43,8 +43,15 @@ Ejemplo para analizar rendimiento con distintos tamaños de archivo:
 ```
 miprof ejec sort archivo.txt
 ```
-
-
+Salida esperada 
+```
+--- Medición de 'sort archivo.txt ' ---
+Tiempo Real: 		0.785227 s
+Tiempo de Usuario (CPU): 	0.001192 s
+Tiempo de Sistema (CPU): 	0.071570 s
+Peak de Memoria: 	15616 KB
+--------------------------------------
+```
 # 3. Limite de tiempo
 
 ```
